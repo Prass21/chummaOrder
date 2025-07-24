@@ -93,27 +93,6 @@ export const AuthProvider = ({ children }) => {
     });
     
     if (error) throw error;
-    
-    // Fetch user profile to check role
-    if (data.user) {
-      const { data: userProfile, error: profileError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('id', data.user.id)
-        .maybeSingle();
-
-      if (profileError) {
-        console.error('Error fetching user profile:', profileError);
-        throw new Error('Failed to verify user credentials');
-      }
-
-      if (!userProfile) {
-        throw new Error('Invalid credentials');
-      }
-
-      // Store the user profile temporarily for role checking
-      return userProfile;
-    }
   };
 
   const signUp = async (

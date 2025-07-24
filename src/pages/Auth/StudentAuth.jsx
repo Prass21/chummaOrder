@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Users, ArrowLeft, Mail, Lock, User, Phone, CreditCard, Shield, UserCheck, Star, Sparkles, Award } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { supabase } from '../../lib/supabase';
 import ThemeToggle from '../../components/Common/ThemeToggle';
 import Footer from '../../components/Common/Footer';
 
@@ -50,15 +49,7 @@ const StudentAuth = () => {
 
     try {
       if (isLogin) {
-        const userProfile = await signIn(formData.email, formData.password);
-        
-        // Check if user has student role
-        if (userProfile.role !== 'student') {
-          // Sign out the user since they don't have the correct role
-          await supabase.auth.signOut();
-          throw new Error('Invalid credentials');
-        }
-        
+        await signIn(formData.email, formData.password);
         navigate('/student/dashboard');
       } else {
         if (formData.password !== formData.confirmPassword) {

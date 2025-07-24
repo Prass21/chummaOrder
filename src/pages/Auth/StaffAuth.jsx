@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChefHat, ArrowLeft, Mail, Lock, User, Phone, Crown, UserCheck, Award } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
-import { supabase } from '../../lib/supabase';
 import ThemeToggle from '../../components/Common/ThemeToggle';
 import Footer from '../../components/Common/Footer';
 
@@ -43,15 +42,7 @@ const StaffAuth = () => {
 
     try {
       if (isLogin) {
-        const userProfile = await signIn(formData.email, formData.password);
-        
-        // Check if user has staff role
-        if (userProfile.role !== 'staff') {
-          // Sign out the user since they don't have the correct role
-          await supabase.auth.signOut();
-          throw new Error('Invalid credentials');
-        }
-        
+        await signIn(formData.email, formData.password);
         navigate('/staff/dashboard');
       } else {
         if (formData.password !== formData.confirmPassword) {
